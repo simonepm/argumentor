@@ -56,6 +56,12 @@ class Command {
     protected $options      = [];
     protected $shortsmap    = [];
 
+    private static function is_alpha($s) {
+
+        return in_array($s, str_split("abcdefghijklmnopqrstuwxyz"));
+
+    }
+
     public function RegisterArgument(string $name)
     {
 
@@ -74,34 +80,67 @@ class Command {
 
         $short = ltrim($short, "-");
 
-        $this->options[$name] = NULL;
+        if (!empty($short)) {
 
-        if (!empty($short)) $this->shortsmap[$short] = $name;
+            if (!self::is_alpha($short)) return FALSE;
+
+            if (!empty($this->shortsmap[$short])) return FALSE;
+
+            $this->shortsmap[$short] = $name;
+
+        }
+
+        $this->options[$name] = NULL;
 
         return TRUE;
 
     }
 
-    public function Exec(callable $callback, $funcargs = NULL)
+    public function Exec(callable $callback)
+    {
+
+        return $callback(...array_merge($this->argv(), array_slice(func_get_args(), 1)));
+
+    }
+
+    private function argv()
     {
 
         global $argv;
 
-        for ($i = 1; $i < count($argv); $i++) {
+        $argvCopy = $argv;
 
-            $arg = $argv[$i];
+        $fargs = func_get_args();
+
+        array_shift($argvCopy);
+
+        if (!empty($fargs)) {
+
+            $fargs = array_filter($fargs);
+
+            array_walk($fargs, function($a) { if (!is_string($a)) throw new \Exception("invalid array of string"); });
+
+            $argvCopy = $fargs;
+
+        }
+
+        $argvCopy = array_values($argvCopy);
+
+        for ($i = 0; $i < count($argvCopy); $i++) {
+
+            $arg = $argvCopy[$i];
 
             if (is_string($arg)) {
 
-                $argtrim = ltrim($argv[$i], "-");
+                $argTrim = ltrim($argvCopy[$i], "-");
 
-                if (strlen($argtrim) > 0) {
+                if (strlen($argTrim) > 0) {
 
-                    if ($arg[0] == "-") {
+                    if ($arg[0] == "-" && (self::is_alpha($arg[1]) || $arg[1] == "-")) {
 
                         if ($arg[1] !== "-" && strlen($arg) > 2 && $arg[2] !== "=") {
 
-                            $flags = str_split($argtrim);
+                            $flags = str_split($argTrim);
 
                             foreach ($flags as $flag) {
 
@@ -117,7 +156,7 @@ class Command {
 
                         } else {
 
-                            $names = explode("=", $argtrim);
+                            $names = explode("=", $argTrim);
 
                             $name  = array_shift($names);
 
@@ -129,9 +168,9 @@ class Command {
 
                                     $this->options[$name] = array_pop($names);
 
-                                } else if (isset($argv[$i + 1]) && $argv[$i + 1][0] !== "-") {
+                                } else if (isset($argvCopy[$i + 1]) && $argvCopy[$i + 1][0] !== "-") {
 
-                                    $this->options[$name] = $argv[$i + 1];
+                                    $this->options[$name] = $argvCopy[$i + 1];
 
                                     $i++;
 
@@ -167,11 +206,7 @@ class Command {
 
         }
 
-        $funcargs = func_get_args();
-
-        array_shift($funcargs);
-
-        return $callback(new Arguments($this->arguments), new Options($this->options), $funcargs);
+        return [ new Arguments($this->arguments), new Options($this->options) ];
 
     }
 
