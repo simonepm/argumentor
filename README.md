@@ -11,8 +11,8 @@ simple and easy PHP library for passing arguments and options to a PHP command s
     # php example.php testArgument -o testOption
 
     <?php // example.php
-    
-        include "./vendor/autoload.php";
+        
+        require_once "vendor/autoload.php";
 
         use Simonepm\Argumentor\Command;
         use Simonepm\Argumentor\Argument;
