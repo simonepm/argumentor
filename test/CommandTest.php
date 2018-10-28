@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Simonpm\Argumentor\Command;
+use Simonepm\Argumentor\Command;
 
 class CommandTest extends PHPUnit\Framework\TestCase
 {

@@ -10,9 +10,9 @@ simple and easy PHP library for passing arguments and options to a PHP command s
     
         // example.php
 
-        use Simonpm\Argumentor\Command
-        use Simonpm\Argumentor\Argument
-        use Simonpm\Argumentor\Option
+        use Simonepm\Argumentor\Command
+        use Simonepm\Argumentor\Argument
+        use Simonepm\Argumentor\Option
 
         $command = new Command();
 
