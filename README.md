@@ -4,16 +4,25 @@ simple and easy PHP library for passing arguments and options to a PHP command s
 
 ## Usage
 
+    # php example.php testArgument -o testOption
+
     <?php
+    
+        // example.php
 
-    include "./argumentor.php"
+        use Simonpm\Argumentor\Command
+        use Simonpm\Argumentor\Argument
+        use Simonpm\Argumentor\Option
 
-    $command = new Argumentor\Command();
+        $command = new Command();
 
-    $command->RegisterArgument("argumentA");
-    $command->RegisterOption("optionA", "o");
+        $command->RegisterArgument("argument");
+        $command->RegisterOption("option", "o");
 
-    $command->Exec(function(\Argumentor\Arguments $arguments, \Argumentor\Options $options) {
-        var_dump($arguments->Get("argumentA"));
-        var_dump($options->Get("optionA"));
-    });
+        $command->Exec(function(Argument $argument, Option $option) {
+
+            echo $argument->Get("argument") . PHP_EOL; // echo "testArgument\n"
+
+            echo $option->Get("option") . PHP_EOL; // echo "testOption\n"
+
+        });

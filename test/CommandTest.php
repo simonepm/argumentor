@@ -1,7 +1,9 @@
 <?php
 
-require './argumentor.php';
- 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Simonpm\Argumentor\Command;
+
 class CommandTest extends PHPUnit\Framework\TestCase
 {
 
@@ -9,7 +11,7 @@ class CommandTest extends PHPUnit\Framework\TestCase
 
     protected static function getPrivateMethod($name) {
 
-        $class = new ReflectionClass('Argumentor\Command');
+        $class = new ReflectionClass('Command');
 
         $method = $class->getMethod($name);
 
@@ -22,7 +24,7 @@ class CommandTest extends PHPUnit\Framework\TestCase
     protected function setUp()
     {
         
-        $this->command = new Argumentor\Command();
+        $this->command = new Command();
 
         $this->command->RegisterArgument("argument");
         $this->command->RegisterOption("option");
