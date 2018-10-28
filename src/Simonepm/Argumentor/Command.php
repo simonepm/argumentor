@@ -2,14 +2,11 @@
 
 namespace Simonepm\Argumentor;
 
-use Argument;
-use Option;
-
 class Command {
 
     protected $arguments    = [];
     protected $options      = [];
-    protected $shortsmap    = [];
+    protected $shorts       = [];
 
     private static function is_alpha($s) {
 
@@ -39,9 +36,9 @@ class Command {
 
             if (!self::is_alpha($short)) return FALSE;
 
-            if (!empty($this->shortsmap[$short])) return FALSE;
+            if (!empty($this->shorts[$short])) return FALSE;
 
-            $this->shortsmap[$short] = $name;
+            $this->shorts[$short] = $name;
 
         }
 
@@ -103,7 +100,7 @@ class Command {
 
                             foreach ($flags as $flag) {
 
-                                $name = array_key_exists($flag, $this->shortsmap) ? $this->shortsmap[$flag] : FALSE;
+                                $name = array_key_exists($flag, $this->shorts) ? $this->shorts[$flag] : FALSE;
 
                                 if ($name && array_key_exists($name, $this->options)) {
 
@@ -119,7 +116,7 @@ class Command {
 
                             $name  = array_shift($names);
 
-                            $name  = array_key_exists($name, $this->shortsmap) ? $this->shortsmap[$name] : $name;
+                            $name  = array_key_exists($name, $this->shorts) ? $this->shorts[$name] : $name;
 
                             if (array_key_exists($name, $this->options)) {
 

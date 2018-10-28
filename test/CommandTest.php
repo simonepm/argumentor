@@ -11,7 +11,7 @@ class CommandTest extends PHPUnit\Framework\TestCase
 
     protected static function getPrivateMethod($name) {
 
-        $class = new ReflectionClass('Command');
+        $class = new ReflectionClass('Simonepm\Argumentor\Command');
 
         $method = $class->getMethod($name);
 

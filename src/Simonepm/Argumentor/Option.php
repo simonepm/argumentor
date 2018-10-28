@@ -2,7 +2,7 @@
 
 namespace Simonepm\Argumentor;
 
-class Options {
+class Option {
 
     private $options = [];
 

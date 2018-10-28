@@ -2,7 +2,7 @@
     "name": "simonepm/argumentor",
     "type": "library",
     "description": "simple and easy PHP library for passing arguments and options to a PHP command script from command line.",
-    "keywords": ["php","library","command","argument","option","arguments","options"],
+    "keywords": [ "php","library","command","argument","option","arguments","options" ],
     "homepage": "https://github.com/simonepm/argumentor",
     "license": "MIT",
     "authors": [
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Simonepm\\Argumentor\\": "src"
+            "Simonepm\\Argumentor\\": "src/Simonepm/Argumentor/"
         }
     }
 }
