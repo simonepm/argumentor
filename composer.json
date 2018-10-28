@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Simonepm\\Argumentor\\": "src/Simonepm/Argumentor/"
+            "Simonepm\\Argumentor\\": "src"
         }
     }
 }
