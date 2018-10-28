@@ -1,54 +1,9 @@
 <?php
 
-namespace Argumentor;
+namespace Simonepm\Argumentor;
 
-class Arguments {
-
-    private $arguments = [];
-
-    public function __construct(array $arguments)
-    {
-
-        $this->arguments = $arguments;
-
-        return TRUE;
-
-    }
-
-    public function Get(string $name)
-    {
-
-        $name = ltrim($name, "-");
-
-        return isset($this->arguments[$name]) ? $this->arguments[$name] : NULL;
-
-    }
-
-}
-
-class Options {
-
-    private $options = [];
-
-    public function __construct(array $options)
-    {
-
-        $this->options = $options;
-
-        return TRUE;
-
-    }
-
-    public function Get(string $name)
-    {
-
-        $name = ltrim($name, "-");
-
-        return isset($this->options[$name]) ? $this->options[$name] : NULL;
-
-    }
-
-}
+use Argument;
+use Option;
 
 class Command {
 
@@ -73,7 +28,7 @@ class Command {
 
     }
 
-    public function RegisterOption(string $name, string $short = "")
+    public function RegisterOption(string $name, string $short = NULL)
     {
 
         $name = ltrim($name, "-");
@@ -98,8 +53,12 @@ class Command {
 
     public function Exec(callable $callback)
     {
+        
+        $cargs = $this->argv();
+        
+        $fargs = array_slice(func_get_args(), 1);
 
-        return $callback(...array_merge($this->argv(), array_slice(func_get_args(), 1)));
+        return $callback(...array_merge($cargs, $fargs));
 
     }
 
@@ -132,13 +91,13 @@ class Command {
 
             if (is_string($arg)) {
 
-                $argTrim = ltrim($argvCopy[$i], "-");
+                $argTrim = ltrim($arg, "-");
 
                 if (strlen($argTrim) > 0) {
 
-                    if ($arg[0] == "-" && (self::is_alpha($arg[1]) || $arg[1] == "-")) {
+                    if ($arg[0] == "-" && ($arg[1] == "-" || self::is_alpha($arg[1]))) {
 
-                        if ($arg[1] !== "-" && strlen($arg) > 2 && $arg[2] !== "=") {
+                        if ($arg[1] !== "-" && isset($arg[2]) && $arg[2] !== "=") {
 
                             $flags = str_split($argTrim);
 
@@ -170,7 +129,9 @@ class Command {
 
                                 } else if (isset($argvCopy[$i + 1]) && $argvCopy[$i + 1][0] !== "-") {
 
-                                    $this->options[$name] = $argvCopy[$i + 1];
+                                    $argNext = $argvCopy[$i + 1];
+
+                                    $this->options[$name] = $argNext;
 
                                     $i++;
 
@@ -206,7 +167,7 @@ class Command {
 
         }
 
-        return [ new Arguments($this->arguments), new Options($this->options) ];
+        return [ new Argument($this->arguments), new Option($this->options) ];
 
     }
 
