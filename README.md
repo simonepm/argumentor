@@ -8,6 +8,7 @@ simple and easy PHP library for passing arguments and options to a PHP script fr
 
 ## Usage
 
+    ```php
     # php example.php testArgument -o testOption
 
     <?php // example.php
@@ -30,3 +31,4 @@ simple and easy PHP library for passing arguments and options to a PHP script fr
             echo $option->Get("option") . PHP_EOL; // "testOption\n"
 
         });
+    ```
