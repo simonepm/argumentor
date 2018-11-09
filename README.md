@@ -8,11 +8,14 @@ simple and easy PHP library for passing arguments and options to a PHP script fr
 
 ## Usage
 
+    php example.php testArgument -o testOption
+
+## Example
+
     ```php
-    # php example.php testArgument -o testOption
 
     <?php // example.php
-        
+
         require_once "vendor/autoload.php";
 
         use Simonepm\Argumentor\Command;
@@ -31,4 +34,5 @@ simple and easy PHP library for passing arguments and options to a PHP script fr
             echo $option->Get("option") . PHP_EOL; // "testOption\n"
 
         });
+
     ```
