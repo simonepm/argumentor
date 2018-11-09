@@ -8,25 +8,31 @@ simple and easy PHP library for passing arguments and options to a PHP script fr
 
 ## Usage
 
-    # php example.php testArgument -o testOption
+    php example.php testArgument -o testOption
 
-    <?php // example.php
-        
-        require_once "vendor/autoload.php";
+## Example
 
-        use Simonepm\Argumentor\Command;
-        use Simonepm\Argumentor\Argument;
-        use Simonepm\Argumentor\Option;
+```php
+<?php
 
-        $command = new Command();
+    require_once "vendor/autoload.php";
 
-        $command->RegisterArgument("argument");
-        $command->RegisterOption("option", "o");
+    use Simonepm\Argumentor\Command;
+    use Simonepm\Argumentor\Argument;
+    use Simonepm\Argumentor\Option;
 
-        $command->Exec(function(Argument $argument, Option $option) {
+    $command = new Command();
 
-            echo $argument->Get("argument") . PHP_EOL; // "testArgument\n"
+    $command->RegisterArgument("argument");
+    $command->RegisterOption("option", "o");
 
-            echo $option->Get("option") . PHP_EOL; // "testOption\n"
+    $command->Exec(function(Argument $argument, Option $option) {
 
-        });
+        echo $argument->Get("argument") . PHP_EOL; // "testArgument\n"
+
+        echo $option->Get("option") . PHP_EOL; // "testOption\n"
+
+    });
+    
+?>
+```
